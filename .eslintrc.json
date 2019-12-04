@@ -1,0 +1,3 @@
+{
+  "extends": ["@gdjiami/eslint-config"]
+}
