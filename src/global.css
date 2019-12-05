@@ -1,0 +1,8 @@
+@import url('~bootstrap/dist/css/bootstrap.css');
+
+html,
+body,
+#root {
+  width: 100%;
+  height: 100%;
+}

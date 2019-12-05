@@ -1,4 +1,5 @@
 import { app, BrowserWindowConstructorOptions, BrowserWindow } from 'electron'
+import install, { REACT_DEVELOPER_TOOLS } from 'electron-devtools-installer'
 
 export const WindowHost =
   process.env.NODE_ENV === 'development'
@@ -8,6 +9,8 @@ export const WindowHost =
 app.on('ready', () => {
   const config: BrowserWindowConstructorOptions = {
     title: '主页',
+    width: 1000,
+    height: 800,
     webPreferences: {
       nodeIntegration: true,
     },
@@ -15,4 +18,5 @@ app.on('ready', () => {
   const url = `${WindowHost}/index.html`
   const win = new BrowserWindow(config)
   win.loadURL(url)
+  install([REACT_DEVELOPER_TOOLS])
 })
