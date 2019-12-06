@@ -49,6 +49,7 @@ const Footer = styled.footer`
 export const Details: FC<DetailsProps> = observer(props => {
   const { config } = props
   const [preview, setPreview] = useState(false)
+  const [initialData, setInitialData] = useState<any>(undefined)
   const [renderer] = useState(() => {
     return new api.Render(config.basePath, config)
   })
@@ -61,7 +62,9 @@ export const Details: FC<DetailsProps> = observer(props => {
   })
 
   const handleSubmit = (e: any) => {
-    render.call(e.formData)
+    const data = e.formData
+    render.call(data)
+    setInitialData(data)
   }
 
   const handleExport = async () => {
@@ -112,7 +115,7 @@ export const Details: FC<DetailsProps> = observer(props => {
           {!!render.error && <Alert>{render.error.message}</Alert>}
           {!!config.model && (
             <FormWrapper>
-              <Form schema={config.model} onSubmit={handleSubmit}>
+              <Form schema={config.model} onSubmit={handleSubmit} formData={initialData}>
                 <Footer>
                   <Button variant="contained" size="small" type="submit" disabled={render.loading}>
                     {render.loading ? '正在生成' : '预览'}

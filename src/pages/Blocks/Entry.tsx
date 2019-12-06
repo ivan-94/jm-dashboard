@@ -75,8 +75,8 @@ const Entry: FC<EntryProps> = observer(props => {
             <FlightTakeoffIcon />
           </IconButton>
           {!isInitial && store.status === SyncStatus.Synced && (
-            <IconButton>
-              <ArrowBackIosIcon onClick={onShowList} />
+            <IconButton onClick={onShowList}>
+              <ArrowBackIosIcon />
             </IconButton>
           )}
           <Status>{status[store.status]}</Status>
