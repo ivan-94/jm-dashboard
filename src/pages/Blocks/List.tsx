@@ -8,7 +8,7 @@ import RefreshIcon from '@material-ui/icons/Refresh'
 import ProgressUnderButton from '~/components/ProgressUnderButton'
 import { usePromise, useInput } from '@gdjiami/hooks'
 import { observer } from 'mobx-react-lite'
-import { BlockConfig } from 'jm-blocks'
+import { BlockConfig } from '@gdjiami/blocks'
 
 import useBlockStore from './store'
 import Details from './Details'

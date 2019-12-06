@@ -2,7 +2,7 @@ import React, { FC } from 'react'
 import { clipboard } from 'electron'
 import { ExpansionPanel, Button, ExpansionPanelSummary, ExpansionPanelDetails } from '@material-ui/core'
 import styled from 'styled-components/macro'
-import { api } from 'jm-blocks'
+import { api } from '@gdjiami/blocks'
 
 export interface PreviewProps {
   style?: React.CSSProperties

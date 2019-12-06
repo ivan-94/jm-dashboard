@@ -2,7 +2,7 @@ import EventEmitter from 'events'
 import { observable } from 'mobx'
 import path from 'path'
 import os from 'os'
-import { api } from 'jm-blocks'
+import { api } from '@gdjiami/blocks'
 import { ensureDir, isExists } from '~/utils/fs'
 import { clone } from '~/utils/git-sync'
 
