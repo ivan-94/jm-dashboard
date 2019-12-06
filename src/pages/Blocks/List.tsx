@@ -1,17 +1,19 @@
 import React, { useState, useEffect, FC } from 'react'
 import styled from 'styled-components/macro'
+import { Dialog, AppBar, IconButton, Toolbar, Card, CardContent, CardActions, Chip, InputBase } from '@material-ui/core'
+import CloseIcon from '@material-ui/icons/Close'
+import SearchIcon from '@material-ui/icons/Search'
+import SettingsIcon from '@material-ui/icons/Settings'
 import { usePromise, useInput } from '@gdjiami/hooks'
-import { Card, Badge, InputGroup, Form, FormControl, Button } from 'react-bootstrap'
 import { observer } from 'mobx-react-lite'
 import { BlockConfig } from 'jm-blocks'
 
 import useBlockStore from './store'
-import { ReactComponent as SettingIcon } from './setting.svg'
 import Details from './Details'
 
 const Cards = styled.div`
   padding: 20px;
-  & .card {
+  & .MuiPaper-root {
     display: inline-block;
     min-width: 253px;
     margin: 10px;
@@ -25,6 +27,16 @@ const Wrapper = styled.div`
 
 const Header = styled.header`
   margin: 20px 10px;
+`
+
+const Title = styled.div`
+  font-size: 18px;
+`
+const SubTitle = styled.div`
+  font-size: 16px;
+`
+const Text = styled.div`
+  font-size: 14px;
 `
 
 const Tags = styled.div`
@@ -64,46 +76,50 @@ const List: FC<ListProps> = observer(props => {
   return (
     <Wrapper>
       <Header>
-        <Form onSubmit={handleSubmit}>
-          <InputGroup size="sm">
-            <FormControl placeholder="区块名称" {...queryInput.input}></FormControl>
-            <InputGroup.Append>
-              <Button type="submit">{list.loading ? '搜索中...' : '搜索'}</Button>
-            </InputGroup.Append>
-          </InputGroup>
-          <SettingIcon onClick={onResetEntry}></SettingIcon>
-        </Form>
+        <form onSubmit={handleSubmit}>
+          <InputBase placeholder="区块名称" {...queryInput.input} />
+          <IconButton type="submit">
+            <SearchIcon />
+          </IconButton>
+          <IconButton onClick={onResetEntry}>
+            <SettingsIcon></SettingsIcon>
+          </IconButton>
+        </form>
       </Header>
       <Cards>
         {list.value?.map(i => {
           return (
             <Card key={i.id} onClick={() => setSelected(i)}>
-              <Card.Img variant="top"></Card.Img>
-              <Card.Body>
-                <Card.Title>{i.name}</Card.Title>
-                <Card.Subtitle>{i.description}</Card.Subtitle>
-                <Card.Text>
+              <CardContent>
+                <Title>{i.name}</Title>
+                <SubTitle>{i.description}</SubTitle>
+                <Text>
                   {i.author && <div>作者: {i.author}</div>}
                   {i.version && <div>版本号: {i.version}</div>}
-                </Card.Text>
-              </Card.Body>
-              <Card.Footer>
+                </Text>
+              </CardContent>
+              <CardActions>
                 <Tags>
                   {i.tag?.map((tag, i) => {
-                    return (
-                      <Badge key={i} variant="secondary">
-                        {tag}
-                      </Badge>
-                    )
+                    return <Chip key={i} label={tag} />
                   })}
                 </Tags>
-              </Card.Footer>
+              </CardActions>
             </Card>
           )
         })}
       </Cards>
 
-      {selected && <Details config={selected} onClose={handleClose}></Details>}
+      <Dialog fullScreen open={!!selected} onClose={handleClose}>
+        <AppBar style={{ position: 'relative' }}>
+          <Toolbar>
+            <IconButton edge="start" color="inherit" onClick={handleClose} aria-label="close">
+              <CloseIcon />
+            </IconButton>
+          </Toolbar>
+        </AppBar>
+        {selected && <Details config={selected}></Details>}
+      </Dialog>
     </Wrapper>
   )
 })

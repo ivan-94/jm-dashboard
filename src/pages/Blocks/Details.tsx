@@ -1,43 +1,26 @@
 import { remote } from 'electron'
 import React, { FC, useState } from 'react'
-import { Button, Alert } from 'react-bootstrap'
+import { Button } from '@material-ui/core'
 import { usePromise, useOnMount } from '@gdjiami/hooks'
 import styled from 'styled-components/macro'
 import { BlockConfig } from 'jm-blocks'
-import Form from 'react-jsonschema-form'
+import { withTheme } from 'react-jsonschema-form'
+import { Theme as MuiTheme } from 'rjsf-material-ui'
+import Alert from '~/components/Alert'
+
 import { api } from 'jm-blocks'
 import { observer } from 'mobx-react-lite'
 
 import Preview from './Preview'
-import { ReactComponent as CloseIcon } from './close.svg'
+const Form = withTheme(MuiTheme)
 
 export interface DetailsProps {
   config: BlockConfig
-  onClose: () => void
 }
-
-const Mask = styled.div`
-  position: fixed;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
-  background-color: #00000036;
-  z-index: 11;
-  overflow: auto;
-`
 
 const Container = styled.div`
   position: relative;
-  top: 100px;
-  left: 50%;
-  transform: translateX(-50%);
-  background-color: white;
-  border: 1px solid gray;
   padding: 17px;
-  border-radius: 3px;
-  width: 86%;
-  box-shadow: 1px 11px 12px -5px #cacaca;
 `
 
 const Header = styled.header``
@@ -62,17 +45,9 @@ const Footer = styled.footer`
     margin-right: 5px;
   }
 `
-const Close = styled(CloseIcon)`
-  color: #b75252;
-  position: absolute;
-  right: 1em;
-  top: 1em;
-  font-size: 20px;
-  cursor: pointer;
-`
 
 export const Details: FC<DetailsProps> = observer(props => {
-  const { config, onClose } = props
+  const { config } = props
   const [preview, setPreview] = useState(false)
   const [renderer] = useState(() => {
     return new api.Render(config.basePath, config)
@@ -113,43 +88,42 @@ export const Details: FC<DetailsProps> = observer(props => {
   })
 
   return (
-    <Mask>
-      <Container>
-        <Header>
-          <Name>{config.name}</Name>
-          <Desc>{config.description}</Desc>
-          <Close onClick={onClose}></Close>
-        </Header>
-        <Body>
-          {!!render.value && preview && (
-            <Preview files={render.value}>
-              <Footer>
-                <Button size="sm" onClick={handleExport} disabled={render.loading}>
-                  {render.loading ? '正在导出...' : '导出'}
-                </Button>
-                <Button size="sm" variant="danger" onClick={() => setPreview(false)}>
+    <Container>
+      <Header>
+        <Name>{config.name}</Name>
+        <Desc>{config.description}</Desc>
+      </Header>
+      <Body>
+        {!!render.value && preview && (
+          <Preview files={render.value}>
+            <Footer>
+              <Button variant="contained" size="small" onClick={handleExport} disabled={render.loading}>
+                {render.loading ? '正在导出...' : '导出'}
+              </Button>
+              {!!config.model && (
+                <Button variant="contained" size="small" color="secondary" onClick={() => setPreview(false)}>
                   返回
                 </Button>
-              </Footer>
-            </Preview>
+              )}
+            </Footer>
+          </Preview>
+        )}
+        <div style={{ display: preview ? 'none' : 'block' }}>
+          {!!render.error && <Alert>{render.error.message}</Alert>}
+          {!!config.model && (
+            <FormWrapper>
+              <Form schema={config.model} onSubmit={handleSubmit}>
+                <Footer>
+                  <Button variant="contained" size="small" type="submit" disabled={render.loading}>
+                    {render.loading ? '正在生成' : '预览'}
+                  </Button>
+                </Footer>
+              </Form>
+            </FormWrapper>
           )}
-          <div style={{ display: preview ? 'none' : 'block' }}>
-            {!!render.error && <Alert variant="danger">{render.error.message}</Alert>}
-            {!!config.model && (
-              <FormWrapper>
-                <Form schema={config.model} onSubmit={handleSubmit}>
-                  <Footer>
-                    <Button size="sm" type="submit" disabled={render.loading}>
-                      {render.loading ? '正在生成' : '预览'}
-                    </Button>
-                  </Footer>
-                </Form>
-              </FormWrapper>
-            )}
-          </div>
-        </Body>
-      </Container>
-    </Mask>
+        </div>
+      </Body>
+    </Container>
   )
 })
 

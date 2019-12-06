@@ -1,5 +1,8 @@
-import React, { FC, useEffect } from 'react'
-import { Form, Button, Alert } from 'react-bootstrap'
+import React, { FC, useEffect, useState } from 'react'
+import { TextField, IconButton } from '@material-ui/core'
+import FlightTakeoffIcon from '@material-ui/icons/FlightTakeoff'
+import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos'
+import Alert from '~/components/Alert'
 import styled from 'styled-components'
 import { observer } from 'mobx-react-lite'
 import { useInput } from '@gdjiami/hooks'
@@ -18,9 +21,19 @@ const EntryWrapper = styled.div`
   flex-direction: column;
 `
 
-const EntryForm = styled(Form)`
+const EntryForm = styled.form`
   width: 100%;
   text-align: center;
+`
+
+const Actions = styled.div`
+  margin-top: 10px;
+`
+
+const Status = styled.div`
+  margin-top: 5px;
+  font-size: 14px;
+  color: gray;
 `
 
 const status = {
@@ -37,31 +50,38 @@ export interface EntryProps {
 const Entry: FC<EntryProps> = observer(props => {
   const { onShowList } = props
   const store = useBlockStore()
+  const [isInitial] = useState(!store.source)
   const url = useInput(store.source)
 
-  const handleClick = () => {
+  const handleSubmit: React.FormEventHandler = evt => {
+    evt.preventDefault()
     if (url.value) {
       store.initialSource(url.value)
     }
   }
 
   useEffect(() => {
-    if (store.status === SyncStatus.Synced) {
+    if (store.status === SyncStatus.Synced && isInitial) {
       onShowList()
     }
   }, [store.status])
 
   return (
     <EntryWrapper>
-      <EntryForm>
-        <Form.Group>
-          <Form.Control placeholder="输入区块源(git地址)" {...url.input}></Form.Control>
-        </Form.Group>
-        <div>
-          <Button onClick={handleClick}>加载</Button>
-          <span>{status[store.status]}</span>
-        </div>
-        {!!store.initialError && <Alert variant="danger">{store.initialError.message}</Alert>}
+      <EntryForm onSubmit={handleSubmit}>
+        <TextField style={{ width: '100%' }} placeholder="输入区块源(git地址)" {...url.input}></TextField>
+        <Actions>
+          <IconButton type="submit">
+            <FlightTakeoffIcon />
+          </IconButton>
+          {!isInitial && store.status === SyncStatus.Synced && (
+            <IconButton>
+              <ArrowBackIosIcon onClick={onShowList} />
+            </IconButton>
+          )}
+          <Status>{status[store.status]}</Status>
+        </Actions>
+        {!!store.initialError && <Alert style={{ position: 'absolute' }}>{store.initialError.message}</Alert>}
       </EntryForm>
     </EntryWrapper>
   )
