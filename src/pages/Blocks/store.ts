@@ -36,12 +36,13 @@ export class BlockStore {
     })
 
     if (source) {
+      this.source = source
       this.initialSource(source)
     }
   }
 
-  public search() {
-    return api.search('', [])
+  public search(q: string) {
+    return api.search(q, [])
   }
 
   private updateSyncStatus() {
