@@ -13,6 +13,7 @@ app.on('ready', () => {
     height: 800,
     webPreferences: {
       nodeIntegration: true,
+      webSecurity: false,
     },
   }
   const url = `${WindowHost}/index.html`

@@ -4,12 +4,15 @@ import { Dialog, AppBar, IconButton, Toolbar, Card, CardContent, CardActions, Ch
 import CloseIcon from '@material-ui/icons/Close'
 import SearchIcon from '@material-ui/icons/Search'
 import SettingsIcon from '@material-ui/icons/Settings'
+import RefreshIcon from '@material-ui/icons/Refresh'
+import ProgressUnderButton from '~/components/ProgressUnderButton'
 import { usePromise, useInput } from '@gdjiami/hooks'
 import { observer } from 'mobx-react-lite'
 import { BlockConfig } from 'jm-blocks'
 
 import useBlockStore from './store'
 import Details from './Details'
+import Alert from '~/components/Alert'
 
 const Cards = styled.div`
   padding: 20px;
@@ -45,13 +48,11 @@ const Tags = styled.div`
   }
 `
 
-export interface ListProps {
-  onResetEntry: () => void
-}
+export interface ListProps {}
 
 const List: FC<ListProps> = observer(props => {
-  const { onResetEntry } = props
   const store = useBlockStore()
+  const { syncing, pull } = store
   const [selected, setSelected] = useState<BlockConfig>()
   const queryInput = useInput('')
   const [query, setQuery] = useState('')
@@ -66,6 +67,10 @@ const List: FC<ListProps> = observer(props => {
 
   const handleSubmit: React.FormEventHandler = evt => {
     evt.preventDefault()
+    if (syncing) {
+      return
+    }
+
     setQuery(queryInput.value || '')
   }
 
@@ -81,12 +86,17 @@ const List: FC<ListProps> = observer(props => {
           <IconButton type="submit">
             <SearchIcon />
           </IconButton>
-          <IconButton onClick={onResetEntry}>
+          <IconButton onClick={() => (store.showList = false)} disabled={syncing}>
             <SettingsIcon></SettingsIcon>
+          </IconButton>
+          <IconButton onClick={pull} disabled={syncing}>
+            <RefreshIcon></RefreshIcon>
+            {syncing && <ProgressUnderButton />}
           </IconButton>
         </form>
       </Header>
       <Cards>
+        {!!list.error && <Alert>{list.error.message}</Alert>}
         {list.value?.map(i => {
           return (
             <Card key={i.id} onClick={() => setSelected(i)}>
@@ -123,5 +133,7 @@ const List: FC<ListProps> = observer(props => {
     </Wrapper>
   )
 })
+
+List.displayName = 'List'
 
 export default List

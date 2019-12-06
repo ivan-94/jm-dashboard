@@ -1,52 +1,108 @@
+import EventEmitter from 'events'
 import { observable } from 'mobx'
+import path from 'path'
+import os from 'os'
 import { api } from 'jm-blocks'
+import { ensureDir, isExists } from '~/utils/fs'
+import { clone } from '~/utils/git-sync'
 
-export class BlockStore {
+const cacheDir = path.join(os.homedir(), '.jm-blocks')
+const CURRENT_SOURCE_KEY = 'blocks-source'
+
+export class BlockStore extends EventEmitter {
   @observable
-  public source?: string
-  @observable
-  public status: api.SyncStatus = api.SyncStatus.Initial
+  public initialing: boolean = true
+
   @observable
   public initialError?: Error
 
-  public initialSource(source: string) {
-    // TODO: 验证来源
+  @observable
+  public syncing: boolean = false
+
+  @observable
+  public syncError?: Error
+
+  @observable
+  public source?: string
+  public target?: string
+  public blocks?: api.Blocks
+
+  /**
+   * 显式列表
+   */
+  @observable
+  showList: boolean = false
+
+  public constructor() {
+    super()
+    this.initial()
+  }
+
+  public initial = async () => {
     try {
-      this.status = api.SyncStatus.Syncing
+      this.initialing = true
       this.initialError = undefined
-      api.changeSource(source)
+      await ensureDir(cacheDir)
+      const source = window.localStorage.getItem(CURRENT_SOURCE_KEY) || undefined
+
+      // 源已存在
+      if (source) {
+        const target = this.getTarget(source)
+        if (await isExists(target)) {
+          this.target = target
+          this.source = source
+          this.showList = true
+          this.blocks = new api.Blocks(target)
+          return
+        } else {
+          // 源不存在
+          // 需要重亲请求
+        }
+      }
     } catch (err) {
       this.initialError = err
     } finally {
-      this.updateSyncStatus()
+      this.initialing = false
     }
   }
 
-  public constructor() {
-    const source = window.localStorage.getItem('block-source') || undefined
-    api.onSyncError(err => {
-      this.initialError = err
-      this.updateSyncStatus()
-    })
+  public pull = () => {
+    this.sync(this.source!)
+  }
 
-    api.onSyncSuccess(() => {
-      this.updateSyncStatus()
-      this.source = api.getCurrentSource()
-      window.localStorage.setItem('block-source', this.source)
-    })
+  public async sync(source: string) {
+    try {
+      this.syncing = true
+      this.syncError = undefined
+      this.validateSource(source)
+      const target = this.getTarget(source)
+      await clone(source, this.getTarget(source))
 
-    if (source) {
       this.source = source
-      this.initialSource(source)
+      this.target = target
+      window.localStorage.setItem(CURRENT_SOURCE_KEY, source)
+      this.blocks = new api.Blocks(target)
+    } catch (err) {
+      this.syncError = err
+    } finally {
+      this.syncing = false
     }
   }
 
+  // TODO: 支持tag
   public search(q: string) {
-    return api.search(q, [])
+    return this.blocks!.search(q, [])
   }
 
-  private updateSyncStatus() {
-    this.status = api.getSyncStatus()
+  private validateSource(source: string) {
+    if (source == null || source.trim() === '' || !source.endsWith('.git')) {
+      throw new Error('请输入合法的 Git 源')
+    }
+  }
+
+  private getTarget = (source: string) => {
+    const dir = path.basename(source, '.git')
+    return path.join(cacheDir, dir)
   }
 }
 
