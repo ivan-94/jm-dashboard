@@ -943,6 +943,19 @@
   resolved "https://registry.npm.taobao.org/@emotion/unitless/download/@emotion/unitless-0.7.4.tgz#a87b4b04e5ae14a88d48ebef15015f6b7d1f5677"
   integrity sha1-qHtLBOWuFKiNSOvvFQFfa30fVnc=
 
+"@gdjiami/blocks@^0.1.0":
+  version "0.1.1"
+  resolved "https://registry.npm.taobao.org/@gdjiami/blocks/download/@gdjiami/blocks-0.1.0.tgz#9ed8170f87d1846067a488fecde24b6570024333"
+  integrity sha1-ntgXD4fRhGBnpIj+zeJLZXACQzM=
+  dependencies:
+    "@types/glob" "^7.1.1"
+    "@types/json5" "^0.0.30"
+    ejs "^3.0.1"
+    glob "^7.1.6"
+    json5 "^2.1.1"
+    lodash "^4.17.15"
+    simple-git "^1.126.0"
+
 "@gdjiami/cli@^1.0.0-alpha.3":
   version "1.0.0-alpha.3"
   resolved "https://registry.npm.taobao.org/@gdjiami/cli/download/@gdjiami/cli-1.0.0-alpha.3.tgz#06cd9b2ab45a99e69cf4fb3b239b6623c1658fda"
@@ -1275,6 +1288,11 @@
   version "7.0.3"
   resolved "https://registry.npm.taobao.org/@types/json-schema/download/@types/json-schema-7.0.3.tgz#bdfd69d61e464dcc81b25159c270d75a73c1a636"
   integrity sha1-vf1p1h5GTcyBslFZwnDXWnPBpjY=
+
+"@types/json5@^0.0.30":
+  version "0.0.30"
+  resolved "https://registry.npm.taobao.org/@types/json5/download/@types/json5-0.0.30.tgz#44cb52f32a809734ca562e685c6473b5754a7818"
+  integrity sha1-RMtS8yqAlzTKVi5oXGRztXVKeBg=
 
 "@types/minimatch@*", "@types/minimatch@^3.0.3":
   version "3.0.3"
@@ -3648,6 +3666,11 @@ ejs@^2.6.1:
   resolved "https://registry.npm.taobao.org/ejs/download/ejs-2.7.4.tgz#48661287573dcc53e366c7a1ae52c3a120eec9ba"
   integrity sha1-SGYSh1c9zFPjZsehrlLDoSDuybo=
 
+ejs@^3.0.1:
+  version "3.0.1"
+  resolved "https://registry.npm.taobao.org/ejs/download/ejs-3.0.1.tgz#30c8f6ee9948502cc32e85c37a3f8b39b5a614a5"
+  integrity sha1-MMj27plIUCzDLoXDej+LObWmFKU=
+
 electron-devtools-installer@^2.2.4:
   version "2.2.4"
   resolved "https://registry.npm.taobao.org/electron-devtools-installer/download/electron-devtools-installer-2.2.4.tgz#261a50337e37121d338b966f07922eb4939a8763"
@@ -5580,7 +5603,7 @@ json5@^1.0.1:
   dependencies:
     minimist "^1.2.0"
 
-json5@^2.1.0:
+json5@^2.1.0, json5@^2.1.1:
   version "2.1.1"
   resolved "https://registry.npm.taobao.org/json5/download/json5-2.1.1.tgz?cache=0&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fjson5%2Fdownload%2Fjson5-2.1.1.tgz#81b6cb04e9ba496f1c7005d07b4368a2638f90b6"
   integrity sha1-gbbLBOm6SW8ccAXQe0NoomOPkLY=
@@ -8841,6 +8864,13 @@ signal-exit@^3.0.0, signal-exit@^3.0.2:
   version "3.0.2"
   resolved "https://registry.npm.taobao.org/signal-exit/download/signal-exit-3.0.2.tgz#b5fdc08f1287ea1178628e415e25132b73646c6d"
   integrity sha1-tf3AjxKH6hF4Yo5BXiUTK3NkbG0=
+
+simple-git@^1.126.0:
+  version "1.126.0"
+  resolved "https://registry.npm.taobao.org/simple-git/download/simple-git-1.126.0.tgz#0c345372275139c8433b8277f4b3e155092aa434"
+  integrity sha1-DDRTcidROchDO4J39LPhVQkqpDQ=
+  dependencies:
+    debug "^4.0.1"
 
 simple-swizzle@^0.2.2:
   version "0.2.2"
