@@ -1000,7 +1000,6 @@
     file-loader "1.1.11"
     fork-ts-checker-webpack-plugin "1.6.0"
     fs-extra "8.1.0"
-    fsevents "1.2.4"
     glob "7.1.6"
     hash-sum "1.0.2"
     html-webpack-plugin "4.0.0-beta.5"
@@ -1057,6 +1056,13 @@
   version "0.4.12"
   resolved "https://registry.npm.taobao.org/@gdjiami/hooks/download/@gdjiami/hooks-0.4.12.tgz#66d6008d1c6a5802bbffaaa19868f95f8fcbe731"
   integrity sha1-ZtYAjRxqWAK7/6qhmGj5X4/L5zE=
+
+"@gdjiami/jslib@^0.4.2":
+  version "0.4.2"
+  resolved "https://registry.npm.taobao.org/@gdjiami/jslib/download/@gdjiami/jslib-0.4.2.tgz#643bee6b5f73323b264b0f65f8aff63a5e2ec0b4"
+  integrity sha1-ZDvua19zMjsmSw9l+K/2Ol4uwLQ=
+  dependencies:
+    qs "^6.5.2"
 
 "@material-ui/core@^4.7.1":
   version "4.7.1"
@@ -8197,6 +8203,11 @@ qs@6.7.0:
   version "6.7.0"
   resolved "https://registry.npm.taobao.org/qs/download/qs-6.7.0.tgz?cache=0&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fqs%2Fdownload%2Fqs-6.7.0.tgz#41dc1a015e3d581f1621776be31afb2876a9b1bc"
   integrity sha1-QdwaAV49WB8WIXdr4xr7KHapsbw=
+
+qs@^6.5.2:
+  version "6.9.1"
+  resolved "https://registry.npm.taobao.org/qs/download/qs-6.9.1.tgz?cache=0&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fqs%2Fdownload%2Fqs-6.9.1.tgz#20082c65cb78223635ab1a9eaca8875a29bf8ec9"
+  integrity sha1-IAgsZct4IjY1qxqerKiHWim/jsk=
 
 qs@~6.5.2:
   version "6.5.2"
