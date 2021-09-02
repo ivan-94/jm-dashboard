@@ -7,7 +7,7 @@
     "@gdjiami/blocks": "^0.2.0",
     "electron": "6",
     "electron-devtools-installer": "^2.2.4",
-    "isomorphic-git": "^0.72.0",
+    "isomorphic-git": "^1.8.2",
     "sanitize.css": "^11.0.0",
     "tslib": "1.9.3"
   },
