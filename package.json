@@ -5,7 +5,7 @@
   "main": "dist/main.js",
   "dependencies": {
     "@gdjiami/blocks": "^0.2.0",
-    "electron": "6",
+    "electron": "13",
     "electron-devtools-installer": "^2.2.4",
     "isomorphic-git": "^0.72.0",
     "sanitize.css": "^11.0.0",
